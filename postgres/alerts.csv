@@ -1,101 +1,101 @@
 alert_id,user_id,alert_type,message,severity,triggered_at,resolved
-alert-00001,user-0001,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-23 13:32:56,False
-alert-00002,user-0002,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-11 23:36:53,True
-alert-00003,user-0003,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-07 08:20:54,True
-alert-00004,user-0004,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-11 19:56:21,True
-alert-00005,user-0005,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-13 20:48:34,False
-alert-00006,user-0006,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-22 11:40:54,False
-alert-00007,user-0007,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-29 18:38:04,False
-alert-00008,user-0008,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-12 06:16:55,False
-alert-00009,user-0009,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-14 12:46:29,True
-alert-00010,user-0010,weight_change,Significant weight change detected (>5% in one month),medium,2025-09-25 11:12:52,True
-alert-00011,user-0011,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-17 06:00:17,False
-alert-00012,user-0012,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-21 09:28:09,False
-alert-00013,user-0013,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-19 18:44:18,True
-alert-00014,user-0014,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-22 12:33:25,False
-alert-00015,user-0015,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-08 12:01:32,True
-alert-00016,user-0016,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-16 23:34:45,False
-alert-00017,user-0017,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-21 07:20:11,False
-alert-00018,user-0018,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-09 21:51:48,True
-alert-00019,user-0019,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-13 23:57:29,True
-alert-00020,user-0020,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-24 04:52:02,False
-alert-00021,user-0021,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-07 16:44:22,False
-alert-00022,user-0022,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-30 21:45:41,True
-alert-00023,user-0023,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-09-29 01:54:23,False
-alert-00024,user-0024,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-21 17:44:49,True
-alert-00025,user-0025,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-05 15:34:39,False
-alert-00026,user-0026,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-13 17:37:59,True
-alert-00027,user-0027,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-05 07:46:39,False
-alert-00028,user-0028,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-07 21:28:56,False
-alert-00029,user-0029,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-17 08:10:06,False
-alert-00030,user-0030,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-22 07:32:27,True
-alert-00031,user-0031,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-12 14:35:44,False
-alert-00032,user-0032,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-19 23:06:11,True
-alert-00033,user-0033,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-06 02:43:32,False
-alert-00034,user-0034,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-11 13:12:43,False
-alert-00035,user-0035,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-08 03:45:49,False
-alert-00036,user-0036,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-09-27 03:03:14,False
-alert-00037,user-0037,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-10 08:42:54,False
-alert-00038,user-0038,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-03 16:58:21,False
-alert-00039,user-0039,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-25 02:54:54,False
-alert-00040,user-0040,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-03 08:56:29,True
-alert-00041,user-0041,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-02 09:47:48,True
-alert-00042,user-0042,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-03 13:12:05,False
-alert-00043,user-0043,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-22 13:09:45,True
-alert-00044,user-0044,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-12 13:03:54,False
-alert-00045,user-0045,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-09 23:58:09,False
-alert-00046,user-0046,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-07 05:02:05,True
-alert-00047,user-0047,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-17 06:22:59,False
-alert-00048,user-0048,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-07 14:02:00,True
-alert-00049,user-0049,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-03 14:38:58,False
-alert-00050,user-0050,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-26 06:00:57,False
-alert-00051,user-0051,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-21 12:08:57,True
-alert-00052,user-0052,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-08 02:49:40,False
-alert-00053,user-0053,weight_change,Significant weight change detected (>5% in one month),medium,2025-09-27 15:29:05,False
-alert-00054,user-0054,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-04 19:17:24,False
-alert-00055,user-0055,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-07 11:56:10,False
-alert-00056,user-0056,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-18 22:02:26,True
-alert-00057,user-0057,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-23 06:00:09,True
-alert-00058,user-0058,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-29 07:05:17,True
-alert-00059,user-0059,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-12 18:16:51,False
-alert-00060,user-0060,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-13 19:33:03,False
-alert-00061,user-0061,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-09 14:42:46,True
-alert-00062,user-0062,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-13 18:29:35,False
-alert-00063,user-0063,weight_change,Significant weight change detected (>5% in one month),medium,2025-09-29 06:46:56,True
-alert-00064,user-0064,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-02 15:28:23,True
-alert-00065,user-0065,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-13 09:46:39,False
-alert-00066,user-0066,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-10 07:26:33,True
-alert-00067,user-0067,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-17 13:40:45,False
-alert-00068,user-0068,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-21 09:08:34,False
-alert-00069,user-0069,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-29 02:21:17,True
-alert-00070,user-0070,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-12 09:37:40,True
-alert-00071,user-0071,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-17 17:29:57,False
-alert-00072,user-0072,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-17 13:17:45,True
-alert-00073,user-0073,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-09-30 06:43:12,True
-alert-00074,user-0074,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-02 12:15:34,True
-alert-00075,user-0075,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-30 06:12:31,True
-alert-00076,user-0076,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-10 01:15:36,False
-alert-00077,user-0077,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-16 02:25:32,True
-alert-00078,user-0078,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-02 07:44:36,True
-alert-00079,user-0079,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-24 18:37:00,False
-alert-00080,user-0080,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-01 19:41:17,True
-alert-00081,user-0081,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-08 19:19:52,False
-alert-00082,user-0082,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-05 14:09:59,True
-alert-00083,user-0083,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-14 08:43:19,True
-alert-00084,user-0084,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-17 09:32:06,True
-alert-00085,user-0085,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-12 00:08:13,True
-alert-00086,user-0086,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-23 08:33:52,False
-alert-00087,user-0087,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-16 02:32:02,True
-alert-00088,user-0088,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-09-30 18:56:34,False
-alert-00089,user-0089,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-13 00:59:43,True
-alert-00090,user-0090,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-13 22:56:24,True
-alert-00091,user-0091,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-20 12:13:40,True
-alert-00092,user-0092,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-30 14:44:08,True
-alert-00093,user-0093,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-21 00:31:19,False
-alert-00094,user-0094,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-09 21:38:12,True
-alert-00095,user-0095,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-06 01:19:56,True
-alert-00096,user-0096,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-27 09:44:33,True
-alert-00097,user-0097,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-22 12:15:52,False
-alert-00098,user-0098,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-30 21:19:24,True
-alert-00099,user-0099,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-28 12:14:03,False
-alert-00100,user-0100,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-09 10:28:37,True
+alert-00001,user-0001,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-07 03:07:46,False
+alert-00002,user-0002,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-23 01:12:35,False
+alert-00003,user-0003,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-16 03:58:59,True
+alert-00004,user-0004,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-06 00:27:50,False
+alert-00005,user-0005,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-28 06:44:27,True
+alert-00006,user-0006,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-27 22:21:26,True
+alert-00007,user-0007,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-08 21:24:38,True
+alert-00008,user-0008,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-14 23:42:50,False
+alert-00009,user-0009,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-20 19:28:29,False
+alert-00010,user-0010,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-09 00:16:26,False
+alert-00011,user-0011,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-21 21:15:10,False
+alert-00012,user-0012,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-13 23:23:02,True
+alert-00013,user-0013,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-27 16:51:44,False
+alert-00014,user-0014,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-11 13:21:27,False
+alert-00015,user-0015,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-24 08:52:35,True
+alert-00016,user-0016,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-23 04:55:14,False
+alert-00017,user-0017,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-13 19:55:52,False
+alert-00018,user-0018,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-05 04:50:34,True
+alert-00019,user-0019,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-24 15:16:49,True
+alert-00020,user-0020,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-26 02:50:31,True
+alert-00021,user-0021,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-26 22:39:05,False
+alert-00022,user-0022,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-02 17:57:51,True
+alert-00023,user-0023,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-17 02:55:11,True
+alert-00024,user-0024,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-12 08:51:09,True
+alert-00025,user-0025,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-13 17:30:35,False
+alert-00026,user-0026,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-25 10:33:06,False
+alert-00027,user-0027,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-18 22:27:30,True
+alert-00028,user-0028,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-21 21:06:45,False
+alert-00029,user-0029,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-05 08:45:21,False
+alert-00030,user-0030,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-24 09:56:56,False
+alert-00031,user-0031,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-22 12:05:04,False
+alert-00032,user-0032,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-10 14:26:51,False
+alert-00033,user-0033,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-06 17:42:42,True
+alert-00034,user-0034,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-01 12:52:29,False
+alert-00035,user-0035,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-14 19:35:19,True
+alert-00036,user-0036,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-04 07:56:43,False
+alert-00037,user-0037,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-10 04:30:46,True
+alert-00038,user-0038,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-03 06:25:21,False
+alert-00039,user-0039,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-04 22:35:31,True
+alert-00040,user-0040,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-20 19:04:33,True
+alert-00041,user-0041,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-05 03:54:23,True
+alert-00042,user-0042,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-17 19:09:27,True
+alert-00043,user-0043,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-03 10:30:09,True
+alert-00044,user-0044,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-17 03:08:04,True
+alert-00045,user-0045,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-11 14:43:51,False
+alert-00046,user-0046,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-01 01:17:18,False
+alert-00047,user-0047,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-23 13:09:21,True
+alert-00048,user-0048,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-13 05:05:01,False
+alert-00049,user-0049,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-16 23:07:21,True
+alert-00050,user-0050,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-17 10:06:00,True
+alert-00051,user-0051,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-07 09:33:13,False
+alert-00052,user-0052,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-14 04:05:13,False
+alert-00053,user-0053,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-06 00:31:24,False
+alert-00054,user-0054,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-27 04:24:47,False
+alert-00055,user-0055,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-29 08:17:27,True
+alert-00056,user-0056,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-14 18:35:53,False
+alert-00057,user-0057,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-02 13:55:48,True
+alert-00058,user-0058,weight_change,Significant weight change detected (>5% in one month),medium,2025-09-26 11:12:33,True
+alert-00059,user-0059,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-07 17:12:51,False
+alert-00060,user-0060,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-17 17:26:15,False
+alert-00061,user-0061,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-04 12:59:19,True
+alert-00062,user-0062,weight_change,Significant weight change detected (>5% in one month),medium,2025-09-25 00:32:29,True
+alert-00063,user-0063,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-22 18:00:14,False
+alert-00064,user-0064,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-22 15:16:28,True
+alert-00065,user-0065,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-10 19:59:36,False
+alert-00066,user-0066,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-30 17:24:17,False
+alert-00067,user-0067,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-19 16:36:30,False
+alert-00068,user-0068,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-02 13:15:45,True
+alert-00069,user-0069,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-14 01:20:13,True
+alert-00070,user-0070,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-09 20:29:31,False
+alert-00071,user-0071,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-28 16:44:37,False
+alert-00072,user-0072,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-02 09:07:13,True
+alert-00073,user-0073,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-09-29 03:54:13,True
+alert-00074,user-0074,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-29 10:05:05,True
+alert-00075,user-0075,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-23 16:59:53,False
+alert-00076,user-0076,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-09-28 01:41:39,True
+alert-00077,user-0077,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-13 06:05:03,False
+alert-00078,user-0078,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-19 02:18:06,False
+alert-00079,user-0079,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-05 05:37:31,True
+alert-00080,user-0080,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-04 10:33:32,True
+alert-00081,user-0081,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-18 15:23:47,True
+alert-00082,user-0082,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-05 06:10:02,False
+alert-00083,user-0083,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-07 07:00:35,True
+alert-00084,user-0084,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-16 14:56:27,False
+alert-00085,user-0085,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-19 10:10:02,True
+alert-00086,user-0086,sleep_issue,Poor sleep quality detected (score < 30 for 3+ days),low,2025-10-17 11:20:52,False
+alert-00087,user-0087,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-23 11:25:57,False
+alert-00088,user-0088,weight_change,Significant weight change detected (>5% in one month),medium,2025-10-09 08:32:49,True
+alert-00089,user-0089,low_activity,Daily steps below target for 7 consecutive days,medium,2025-09-25 05:20:46,False
+alert-00090,user-0090,weight_change,Significant weight change detected (>5% in one month),medium,2025-09-30 20:37:51,True
+alert-00091,user-0091,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-24 10:47:34,True
+alert-00092,user-0092,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-05 03:57:40,False
+alert-00093,user-0093,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-09-25 17:30:52,False
+alert-00094,user-0094,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-04 19:09:07,False
+alert-00095,user-0095,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-04 07:58:05,False
+alert-00096,user-0096,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-19 05:50:33,False
+alert-00097,user-0097,low_activity,Daily steps below target for 7 consecutive days,medium,2025-10-19 21:16:50,False
+alert-00098,user-0098,high_heart_rate,Resting heart rate consistently above 100 bpm,high,2025-10-05 18:46:20,True
+alert-00099,user-0099,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-20 17:47:11,True
+alert-00100,user-0100,goal_achieved,Congratulations! You've achieved your fitness goal,info,2025-10-20 13:47:49,True

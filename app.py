@@ -73,7 +73,7 @@ class Dashboard:
                 # Check if collections have data
                 metrics_count = self.mongo_db.user_metrics.count_documents({})
                 if metrics_count > 0:
-                    st.sidebar.success(f"✅ MongoDB connected ({metrics_count} sensor records)")
+                    st.sidebar.success(f"✅ MongoDB connected")
                 else:
                     st.sidebar.warning("⚠️ MongoDB connected but no sensor data found")
 
@@ -84,7 +84,7 @@ class Dashboard:
                 self.demo_mode = True
 
         except Exception as e:
-            st.sidebar.warning(f"🔧 Using demo mode: {e}")
+            st.sidebar.warning(f"🔧 PostgreSQL are not connected.You are now using default database.\n⚠️Please check if you have run all the steps mentioned in README.md")
             self.demo_mode = True
 
     def load_data(self):
