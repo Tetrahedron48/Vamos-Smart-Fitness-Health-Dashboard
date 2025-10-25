@@ -334,6 +334,7 @@ class Dashboard:
         except Exception as e:
             return {"total_records": 0, "oldest_record": None}
 
+
     def cleanup_old_data(self, days=7):
         """Manually clean up old data - fixed version"""
         try:
