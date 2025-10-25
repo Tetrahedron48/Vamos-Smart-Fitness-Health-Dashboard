@@ -58,7 +58,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-
 class Dashboard:
     def __init__(self):
         self.init_connections()
