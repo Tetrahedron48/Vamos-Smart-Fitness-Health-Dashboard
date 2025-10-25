@@ -315,6 +315,7 @@ class Dashboard:
 
         return latest_metrics
 
+
     def get_data_stats(self):
         """Get real-time data statistics"""
         try:
