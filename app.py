@@ -8,6 +8,8 @@ import psycopg2
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
+import time
+import random
 
 load_dotenv()
 
@@ -38,14 +40,28 @@ st.markdown("""
     .alert-high { background-color: #ffcccc; border-left: 5px solid #ff0000; }
     .alert-medium { background-color: #fff4cc; border-left: 5px solid #ffcc00; }
     .alert-low { background-color: #ccffcc; border-left: 5px solid #00cc00; }
+    .real-time-metric {
+        background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+        margin: 0.5rem;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
 </style>
 """, unsafe_allow_html=True)
-
 
 
 class Dashboard:
     def __init__(self):
         self.init_connections()
+        self.setup_data_retention()  # Setup automatic data cleanup
 
     def init_connections(self):
         """Initialize database connections"""
@@ -56,7 +72,7 @@ class Dashboard:
                 port=int(os.getenv('PG_PORT', 5432)),
                 dbname=os.getenv('PG_DB', 'vamos_fitness'),
                 user=os.getenv('PG_USER', 'postgres'),
-                password=os.getenv('PG_PASSWORD', 'password'),  # Use your actual password
+                password=os.getenv('PG_PASSWORD', 'password'),
                 connect_timeout=3
             )
             st.sidebar.success("✅ PostgreSQL connected")
@@ -84,8 +100,20 @@ class Dashboard:
                 self.demo_mode = True
 
         except Exception as e:
-            st.sidebar.warning(f"🔧 PostgreSQL are not connected.You are now using default database.\n⚠️Please check if you have run all the steps mentioned in README.md")
+            st.sidebar.warning(f"🔧 PostgreSQL connection failed. Using demo mode.")
             self.demo_mode = True
+
+    def setup_data_retention(self):
+        """Setup TTL index for automatic data cleanup (7 days retention)"""
+        try:
+            if not self.demo_mode and hasattr(self, 'mongo_db'):
+                # Create TTL index to automatically delete data after 7 days
+                self.mongo_db.real_time_metrics.create_index(
+                    "timestamp",
+                    expireAfterSeconds=7 * 24 * 60 * 60  # 7 days
+                )
+        except Exception as e:
+            print(f"TTL index setup warning: {e}")
 
     def load_data(self):
         """Load data"""
@@ -104,6 +132,7 @@ class Dashboard:
             user_metrics = list(self.mongo_db.user_metrics.find())
             nutrition_logs = list(self.mongo_db.nutrition_logs.find())
             sleep_records = list(self.mongo_db.sleep_records.find())
+            real_time_metrics = list(self.mongo_db.real_time_metrics.find().sort("timestamp", -1).limit(1000))
 
             data = {
                 'users': users_df,
@@ -113,7 +142,8 @@ class Dashboard:
                 'alerts': alerts_df,
                 'user_metrics': pd.DataFrame(user_metrics),
                 'nutrition_logs': pd.DataFrame(nutrition_logs),
-                'sleep_records': pd.DataFrame(sleep_records)
+                'sleep_records': pd.DataFrame(sleep_records),
+                'real_time_metrics': pd.DataFrame(real_time_metrics)
             }
 
         except Exception as e:
@@ -150,6 +180,9 @@ class Dashboard:
             except:
                 data['sleep_records'] = pd.DataFrame()
 
+            # Generate demo real-time data
+            data['real_time_metrics'] = self.generate_demo_real_time_data()
+
         except Exception as e:
             st.error(f"Demo data loading failed: {e}")
             # Create empty data frames
@@ -161,10 +194,28 @@ class Dashboard:
                 'alerts': pd.DataFrame(),
                 'user_metrics': pd.DataFrame(),
                 'nutrition_logs': pd.DataFrame(),
-                'sleep_records': pd.DataFrame()
+                'sleep_records': pd.DataFrame(),
+                'real_time_metrics': self.generate_demo_real_time_data()
             }
 
         return self.process_dates(data)
+
+    def generate_demo_real_time_data(self):
+        """Generate demo real-time metrics data"""
+        now = datetime.now()
+        data = []
+        for i in range(100):
+            timestamp = now - timedelta(seconds=i * 2)
+            data.append({
+                'user_id': f'user-{random.randint(1, 500):04d}',
+                'metric_type': random.choice(['heart_rate', 'steps', 'calories_burned', 'active_minutes']),
+                'value': random.randint(60, 180) if random.choice(
+                    ['heart_rate', 'steps']) == 'heart_rate' else random.randint(0, 50),
+                'timestamp': timestamp,
+                'device_id': f'device-{random.randint(1, 10):03d}',
+                'session_id': f'session-{random.randint(1000, 9999)}'
+            })
+        return pd.DataFrame(data)
 
     def process_dates(self, data):
         """Unified date format processing"""
@@ -201,7 +252,116 @@ class Dashboard:
         if not data['sleep_records'].empty and 'date' in data['sleep_records'].columns:
             data['sleep_records']['date'] = pd.to_datetime(data['sleep_records']['date'], errors='coerce')
 
+        # Process real-time metrics dates
+        if not data['real_time_metrics'].empty and 'timestamp' in data['real_time_metrics'].columns:
+            data['real_time_metrics']['timestamp'] = pd.to_datetime(data['real_time_metrics']['timestamp'],
+                                                                    errors='coerce')
+
         return data
+
+    def get_user_real_time_metrics(self, user_id):
+        """Get real-time metrics for a specific user"""
+        try:
+            if self.demo_mode:
+                return self.generate_user_demo_metrics(user_id)
+
+            # Get real-time metrics for specific user
+            user_metrics = list(self.mongo_db.real_time_metrics.find(
+                {"user_id": user_id}
+            ).sort("timestamp", -1).limit(50))
+
+            if not user_metrics:
+                return self.generate_user_demo_metrics(user_id)
+
+            return pd.DataFrame(user_metrics)
+
+        except Exception as e:
+            st.error(f"Error fetching user real-time metrics: {e}")
+            return self.generate_user_demo_metrics(user_id)
+
+    def generate_user_demo_metrics(self, user_id):
+        """Generate demo real-time metrics for a specific user"""
+        now = datetime.now()
+        data = []
+        for i in range(20):
+            timestamp = now - timedelta(seconds=i * 3)
+            data.append({
+                'user_id': user_id,
+                'metric_type': random.choice(['heart_rate', 'steps', 'calories_burned', 'active_minutes']),
+                'value': random.randint(60, 180) if random.choice(
+                    ['heart_rate', 'steps']) == 'heart_rate' else random.randint(0, 50),
+                'timestamp': timestamp,
+                'device_id': f'device-{random.randint(1, 10):03d}',
+                'session_id': f'session-{random.randint(1000, 9999)}'
+            })
+        return pd.DataFrame(data)
+
+    def get_latest_user_metrics(self, user_metrics_df):
+        """Get latest value for each metric type for a user"""
+        if user_metrics_df.empty:
+            return {}
+
+        latest_metrics = {}
+        metric_types = ['heart_rate', 'steps', 'calories_burned', 'active_minutes']
+
+        for metric_type in metric_types:
+            metric_data = user_metrics_df[user_metrics_df['metric_type'] == metric_type]
+            if not metric_data.empty:
+                latest = metric_data.iloc[0]  # Already sorted by timestamp descending
+                latest_metrics[metric_type] = {
+                    'value': latest['value'],
+                    'timestamp': latest['timestamp']
+                }
+
+        return latest_metrics
+
+    def get_data_stats(self):
+        """Get real-time data statistics"""
+        try:
+            if self.demo_mode:
+                return {"total_records": 0, "oldest_record": None}
+
+            total = self.mongo_db.real_time_metrics.count_documents({})
+            oldest = self.mongo_db.real_time_metrics.find_one(
+                {},
+                sort=[("timestamp", 1)]
+            )
+
+            return {
+                "total_records": total,
+                "oldest_record": oldest["timestamp"] if oldest else None
+            }
+        except Exception as e:
+            return {"total_records": 0, "oldest_record": None}
+
+    def cleanup_old_data(self, days=7):
+        """Manually clean up old data - fixed version"""
+        try:
+            if self.demo_mode:
+                return 0
+
+            cutoff_date = datetime.now() - timedelta(days=days)
+
+            # First check how many records match the criteria
+            count_before = self.mongo_db.real_time_metrics.count_documents({
+                "timestamp": {"$lt": cutoff_date}
+            })
+
+            st.info(f"Found {count_before} records older than {days} days")
+
+            if count_before > 0:
+                result = self.mongo_db.real_time_metrics.delete_many({
+                    "timestamp": {"$lt": cutoff_date}
+                })
+                return result.deleted_count
+            else:
+                # If no old data found, it might be that all data is newly generated
+                st.warning("No expired data found, all data may be newly generated")
+                return 0
+
+        except Exception as e:
+            st.error(f"Error cleaning up data: {e}")
+            return 0
 
 
 def main():
@@ -220,7 +380,7 @@ def main():
     st.sidebar.title("Navigation")
     page = st.sidebar.selectbox(
         "Select Page",
-        ["System Overview", "User Details", "Health Analytics", "Fitness Analytics", "Data Management"]
+        ["System Overview", "User Details", "Health Analytics", "Fitness Analytics", "Data Management", "Live Metrics"]
     )
 
     # Page routing
@@ -233,11 +393,305 @@ def main():
     elif page == "Fitness Analytics":
         show_fitness_analytics(data)
     elif page == "Data Management":
-        show_data_management(data)
+        show_data_management(dashboard, data)
+    elif page == "Live Metrics":
+        show_live_metrics(dashboard, data)
 
 
+def show_live_metrics(dashboard, data):
+    """Display real-time live metrics page for individual users"""
+    st.header("📊 Live Real-Time Metrics")
+
+    # User selection
+    user_list = data['users']['user_id'].tolist()
+    selected_user = st.selectbox("Select User", user_list)
+
+    if not selected_user:
+        st.info("Please select a user to view real-time metrics")
+        return
+
+    # Get user basic information
+    user_data = data['users'][data['users']['user_id'] == selected_user].iloc[0]
+
+    # Display user information
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.write(f"**Name:** {user_data['name']}")
+        st.write(f"**Age:** {user_data['age']}")
+    with col2:
+        st.write(f"**Gender:** {user_data['gender']}")
+        st.write(f"**Height:** {user_data['height_cm']} cm")
+    with col3:
+        st.write(f"**User ID:** {selected_user}")
+        if 'created_at' in user_data:
+            st.write(f"**Member since:** {user_data['created_at'].strftime('%Y-%m-%d')}")
+
+    st.markdown("---")
+
+    # Auto-refresh control
+    refresh_rate = st.slider("Refresh rate (seconds)", 5, 30, 10)
+
+    # Refresh button
+    if st.button("🔄 Manual Refresh"):
+        st.rerun()
+
+    # Get real-time metrics for selected user
+    user_real_time_metrics = dashboard.get_user_real_time_metrics(selected_user)
+    latest_metrics = dashboard.get_latest_user_metrics(user_real_time_metrics)
+
+    # Display real-time metrics cards
+    st.subheader("🔄 Current Real-Time Metrics")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    metric_display = {
+        "heart_rate": {"name": "❤️ Heart Rate", "unit": "bpm", "icon": "❤️", "color": "#ff6b6b"},
+        "steps": {"name": "👣 Steps", "unit": "steps/min", "icon": "👣", "color": "#4ecdc4"},
+        "calories_burned": {"name": "🔥 Calories", "unit": "cal/min", "icon": "🔥", "color": "#45b7d1"},
+        "active_minutes": {"name": "⏱️ Active", "unit": "min", "icon": "⏱️", "color": "#96ceb4"}
+    }
+
+    # Display metrics cards
+    for metric_type, display_info in metric_display.items():
+        if metric_type in latest_metrics:
+            value = latest_metrics[metric_type]['value']
+            timestamp = latest_metrics[metric_type]['timestamp']
+            status = "Live"
+        else:
+            # Generate appropriate default values if no data
+            if metric_type == "heart_rate":
+                value = random.randint(65, 85)
+            elif metric_type == "steps":
+                value = random.randint(100, 300)
+            elif metric_type == "calories_burned":
+                value = random.randint(5, 15)
+            else:  # active_minutes
+                value = random.randint(2, 10)
+            status = "Simulated"
+            timestamp = datetime.now()
+
+        # Display in appropriate column
+        if metric_type == "heart_rate":
+            with col1:
+                display_metric_card(display_info, value, timestamp, status)
+        elif metric_type == "steps":
+            with col2:
+                display_metric_card(display_info, value, timestamp, status)
+        elif metric_type == "calories_burned":
+            with col3:
+                display_metric_card(display_info, value, timestamp, status)
+        elif metric_type == "active_minutes":
+            with col4:
+                display_metric_card(display_info, value, timestamp, status)
+
+    st.markdown("---")
+
+    # Real-time trends
+    st.subheader("📈 Real-Time Trends")
+
+    if not user_real_time_metrics.empty:
+        col1, col2 = st.columns(2)
+
+        with col1:
+            # Heart rate trend
+            heart_rate_data = user_real_time_metrics[
+                user_real_time_metrics['metric_type'] == 'heart_rate'
+                ].head(20)  # Last 20 records
+
+            if not heart_rate_data.empty:
+                fig = px.line(
+                    heart_rate_data,
+                    x='timestamp',
+                    y='value',
+                    title=f'Heart Rate Trend - {user_data["name"]}',
+                    labels={'value': 'Heart Rate (bpm)', 'timestamp': 'Time'}
+                )
+                fig.update_traces(line=dict(color='red', width=3))
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No heart rate data available for trend analysis")
+
+        with col2:
+            # Steps trend
+            steps_data = user_real_time_metrics[
+                user_real_time_metrics['metric_type'] == 'steps'
+                ].head(20)
+
+            if not steps_data.empty:
+                fig = px.line(
+                    steps_data,
+                    x='timestamp',
+                    y='value',
+                    title=f'Steps Trend - {user_data["name"]}',
+                    labels={'value': 'Steps per minute', 'timestamp': 'Time'}
+                )
+                fig.update_traces(line=dict(color='green', width=3))
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No steps data available for trend analysis")
+
+        # Additional metrics trends
+        col3, col4 = st.columns(2)
+
+        with col3:
+            # Calories burned trend
+            calories_data = user_real_time_metrics[
+                user_real_time_metrics['metric_type'] == 'calories_burned'
+                ].head(20)
+
+            if not calories_data.empty:
+                fig = px.line(
+                    calories_data,
+                    x='timestamp',
+                    y='value',
+                    title=f'Calories Burned Trend - {user_data["name"]}',
+                    labels={'value': 'Calories per minute', 'timestamp': 'Time'}
+                )
+                fig.update_traces(line=dict(color='orange', width=3))
+                st.plotly_chart(fig, use_container_width=True)
+
+        with col4:
+            # Active minutes trend
+            active_data = user_real_time_metrics[
+                user_real_time_metrics['metric_type'] == 'active_minutes'
+                ].head(20)
+
+            if not active_data.empty:
+                fig = px.line(
+                    active_data,
+                    x='timestamp',
+                    y='value',
+                    title=f'Active Minutes Trend - {user_data["name"]}',
+                    labels={'value': 'Active Minutes', 'timestamp': 'Time'}
+                )
+                fig.update_traces(line=dict(color='blue', width=3))
+                st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.info("No real-time data available for trend analysis")
+
+    st.markdown("---")
+
+    # Recent activity feed
+    st.subheader("📋 Recent Activity Feed")
+
+    if not user_real_time_metrics.empty:
+        recent_activities = user_real_time_metrics.head(15)
+        for _, activity in recent_activities.iterrows():
+            timestamp = activity['timestamp'].strftime('%H:%M:%S') if pd.notna(activity['timestamp']) else "Unknown"
+            st.write(f"**{timestamp}** - {activity['metric_type'].replace('_', ' ').title()}: **{activity['value']}**")
+    else:
+        st.info("No recent activity data available")
+
+    # Metric distribution
+    st.subheader("📊 Metric Distribution")
+
+    if not user_real_time_metrics.empty:
+        metric_counts = user_real_time_metrics['metric_type'].value_counts()
+        fig_pie = px.pie(
+            values=metric_counts.values,
+            names=metric_counts.index,
+            title=f'Activity Distribution - {user_data["name"]}'
+        )
+        st.plotly_chart(fig_pie, use_container_width=True)
+
+    # Auto-refresh
+    time.sleep(refresh_rate)
+    st.rerun()
+
+
+def display_metric_card(display_info, value, timestamp, status):
+    """Display a single metric card"""
+    timestamp_str = timestamp.strftime('%H:%M:%S') if isinstance(timestamp, datetime) else "Unknown"
+
+    st.markdown(f"""
+    <div class="real-time-metric">
+        <h3>{display_info['icon']} {display_info['name']}</h3>
+        <h2>{value} {display_info['unit']}</h2>
+        <small>Updated: {timestamp_str}</small>
+        <br><small><em>{status}</em></small>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def show_data_management(dashboard, data):
+    """Display data management page with real-time data management"""
+    st.header("🗃️ Data Management")
+
+    st.subheader("Database Information")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.write("**PostgreSQL Data**")
+        st.write(f"- Users Table: {len(data['users'])} rows")
+        st.write(f"- Activities Table: {len(data['activities'])} rows")
+        st.write(f"- Health Metrics: {len(data['health_metrics'])} rows")
+        st.write(f"- Goals Table: {len(data['goals'])} rows")
+        st.write(f"- Alerts Table: {len(data['alerts'])} rows")
+
+    with col2:
+        st.write("**MongoDB Data**")
+        st.write(f"- User Metrics: {len(data['user_metrics'])} documents")
+        st.write(f"- Nutrition Logs: {len(data['nutrition_logs'])} documents")
+        st.write(f"- Sleep Records: {len(data['sleep_records'])} documents")
+        st.write(f"- Real-time Metrics: {len(data['real_time_metrics'])} documents")
+
+    st.markdown("---")
+
+    # Real-time Data Management Section
+    st.subheader("🔧 Real-time Data Management")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.write("**Data Statistics**")
+        stats = dashboard.get_data_stats()
+        st.write(f"- Total real-time records: {stats['total_records']:,}")
+        if stats['oldest_record']:
+            age = datetime.now() - stats['oldest_record']
+            st.write(f"- Oldest record: {age.days} days {age.seconds // 3600} hours ago")
+
+        st.info("💡 Data automatically expires after 7 days (TTL index)")
+
+    with col2:
+        st.write("**Data Cleanup**")
+        days_to_keep = st.slider("Keep data for (days)", 1, 30, 7)
+
+        if st.button("🗑️ Clean Up Old Data Now"):
+            deleted_count = dashboard.cleanup_old_data(days=days_to_keep)
+            if deleted_count > 0:
+                st.success(f"✅ Deleted {deleted_count} records older than {days_to_keep} days")
+            else:
+                st.info("No records found to delete")
+
+    st.markdown("---")
+
+    st.subheader("Data Export")
+    st.info(
+        "According to project requirements, data is ready to be exported as PostgreSQL dump and MongoDB dump formats")
+
+    if st.button("Generate Export Instructions"):
+        st.markdown("""
+        ### Export Steps:
+
+        **PostgreSQL Export Command:**
+        ```bash
+        pg_dump -h localhost -p 5432 -U postgres \\
+        -d vamos_fitness \\
+        -Fc \\
+        -f postgres/db.dump
+        ```
+
+        **MongoDB Export Command:**
+        ```bash
+        mongodump --db vamos_fitness --out mongo/dump
+        ```
+        """)
+
+
+# All other functions remain exactly the same as before
 def show_overview(data):
     """Display system overview page"""
+    # ... (keep all existing show_overview code exactly the same) ...
     st.header("📊 System Overview")
 
     # KPI metrics
@@ -365,6 +819,7 @@ def show_overview(data):
 
 def show_user_detail(data):
     """Display user details page"""
+    # ... (keep all existing show_user_detail code exactly the same) ...
     st.header("👤 User Details")
 
     if data['users'].empty:
@@ -429,6 +884,7 @@ def show_user_detail(data):
 
 def show_health_analytics(data):
     """Display health analytics page"""
+    # ... (keep all existing show_health_analytics code exactly the same) ...
     st.header("❤️ Health Analytics")
 
     # BMI analysis
@@ -503,6 +959,7 @@ def show_health_analytics(data):
 
 def show_fitness_analytics(data):
     """Display fitness analytics page"""
+    # ... (keep all existing show_fitness_analytics code exactly the same) ...
     st.header("💪 Fitness Analytics")
 
     col1, col2 = st.columns(2)
@@ -538,62 +995,6 @@ def show_fitness_analytics(data):
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.info("No goal data available")
-
-
-def show_data_management(data):
-    """Display data management page"""
-    st.header("🗃️ Data Management")
-
-    st.subheader("Database Information")
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.write("**PostgreSQL Data**")
-        st.write(f"- Users Table: {len(data['users'])} rows")
-        st.write(f"- Activities Table: {len(data['activities'])} rows")
-        st.write(f"- Health Metrics: {len(data['health_metrics'])} rows")
-        st.write(f"- Goals Table: {len(data['goals'])} rows")
-        st.write(f"- Alerts Table: {len(data['alerts'])} rows")
-
-    with col2:
-        st.write("**MongoDB Data**")
-        st.write(f"- User Metrics: {len(data['user_metrics'])} documents")
-        st.write(f"- Nutrition Logs: {len(data['nutrition_logs'])} documents")
-        st.write(f"- Sleep Records: {len(data['sleep_records'])} documents")
-
-    st.subheader("Data Export")
-    st.info("According to project requirements, data is ready to be exported as PostgreSQL dump and MongoDB dump formats")
-
-    if st.button("Generate Export Instructions"):
-        st.markdown("""
-        ### Export Steps:
-
-        **PostgreSQL Export Command:**
-        ```bash
-        pg_dump -h localhost -p 5432 -U postgres \\
-        -d vamos_fitness \\
-        -Fc \\
-        -f postgres/db.dump
-        ```
-
-        **MongoDB Export Command:**
-        ```bash
-        mongodump --db vamos_fitness --out mongo/dump
-        ```
-
-        **Project Structure:**
-        ```
-        GroupA_Dashboard/
-        ├── mongo/
-        │   └── dump/
-        │       └── vamos_fitness/
-        ├── postgres/
-        │   ├── db.dump
-        │   ├── .env
-        │   └── app.py
-        └── README.md
-        ```
-        """)
 
 
 if __name__ == "__main__":

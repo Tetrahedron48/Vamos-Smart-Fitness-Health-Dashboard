@@ -6,6 +6,7 @@ import pandas as pd
 from faker import Faker
 import psycopg2
 from pymongo import MongoClient
+import time
 
 fake = Faker()
 
@@ -16,7 +17,7 @@ os.makedirs('mongo/dump/smart_fitness', exist_ok=True)
 print("Starting to generate sample data...")
 
 
-# PostgreSQL data generation
+# PostgreSQL data generation (unchanged)
 def generate_postgres_data():
     print("Generating PostgreSQL data...")
 
@@ -168,15 +169,32 @@ def generate_postgres_data():
     }
 
 
-# MongoDB data generation
+def _generate_realistic_value(user_id, metric_type):
+    """Generate realistic values based on metric type and user ID"""
+    user_num = int(user_id.split('-')[1])
+    base = (user_num % 40) + 60  # Base value based on user ID
+
+    if metric_type == 'heart_rate':
+        return random.randint(base, base + 20)
+    elif metric_type == 'steps':
+        return random.randint(max(0, base - 40), base)
+    elif metric_type == 'calories_burned':
+        return random.randint(max(1, base // 15), base // 8)
+    elif metric_type == 'active_minutes':
+        return random.randint(max(1, base // 30), base // 20)
+    return 0
+
+
+# MongoDB data generation with improved real-time data
 def generate_mongo_data():
     print("Generating MongoDB data...")
 
     user_metrics = []
     nutrition_logs = []
     sleep_records = []
+    real_time_metrics = []
 
-    # User metrics data (sensor data)
+    # User metrics data (sensor data) - unchanged
     for user_id in [f'user-{i:04d}' for i in range(1, 501)]:
         # Height and weight data
         base_height = random.uniform(150, 190)
@@ -232,7 +250,7 @@ def generate_mongo_data():
                 'status': 'completed'
             })
 
-    # Nutrition logs
+    # Nutrition logs - unchanged
     meal_types = ['breakfast', 'lunch', 'dinner', 'snack']
     foods = ['Chicken Breast', 'Salmon', 'Brown Rice', 'Broccoli', 'Apple', 'Greek Yogurt', 'Almonds', 'Eggs']
 
@@ -250,7 +268,7 @@ def generate_mongo_data():
                 'timestamp': fake.date_time_between(start_date='-30d', end_date='now')
             })
 
-    # Sleep records
+    # Sleep records - unchanged
     for user_id in [f'user-{i:04d}' for i in range(1, 501)]:
         for _ in range(random.randint(10, 20)):
             sleep_duration = random.uniform(4, 9)
@@ -268,10 +286,33 @@ def generate_mongo_data():
                 'times_awakened': random.randint(0, 5)
             })
 
+    # IMPROVED: Real-time metrics data with better distribution
+    print("Generating real-time metrics data...")
+    now = datetime.now()
+
+    # Generate substantial data for better demo experience
+    for user_index, user_id in enumerate([f'user-{i:04d}' for i in range(1, 501)]):
+        # Generate more data for first 100 users
+        records_per_user = 100 if user_index < 100 else 30
+
+        for i in range(records_per_user):
+            timestamp = now - timedelta(minutes=random.randint(0, 60))  # Data from last hour
+            for metric_type in ['heart_rate', 'steps', 'calories_burned', 'active_minutes']:
+                real_time_metrics.append({
+                    'user_id': user_id,
+                    'metric_type': metric_type,
+                    'value': _generate_realistic_value(user_id, metric_type),
+                    'timestamp': timestamp - timedelta(seconds=random.randint(0, 59)),
+                    'device_id': f'device-{random.randint(1, 10):03d}',
+                    'session_id': f'session-{random.randint(1000, 9999)}'
+                })
+
+    print(f"✅ Generated {len(real_time_metrics)} real-time records")
     return {
         'user_metrics': user_metrics,
         'nutrition_logs': nutrition_logs,
-        'sleep_records': sleep_records
+        'sleep_records': sleep_records,
+        'real_time_metrics': real_time_metrics
     }
 
 
@@ -297,12 +338,100 @@ def save_data(postgres_data, mongo_data):
         for doc in mongo_data['sleep_records']:
             f.write(json.dumps(doc, default=str) + '\n')
 
+    # Save real-time metrics data
+    with open('mongo/real_time_metrics.json', 'w') as f:
+        for doc in mongo_data['real_time_metrics']:
+            f.write(json.dumps(doc, default=str) + '\n')
+
     print("Data generation completed!")
     print(f"PostgreSQL table data saved to postgres/ directory")
     print(f"MongoDB document data saved to mongo/ directory")
 
 
+# NEW: High-performance real-time data generator
+def start_fast_data_generation():
+    """Start high-performance real-time data generation"""
+    print("🚀 Starting high-performance real-time data generation...")
+    print("📊 Generating data for all 500 users every second")
+    print("🗑️  Data auto-expires after 7 days (TTL index)")
+    print("Press Ctrl+C to stop\n")
+
+    try:
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['vamos_fitness']
+
+        # Setup TTL index for automatic cleanup
+        db.real_time_metrics.create_index(
+            "timestamp",
+            expireAfterSeconds=7 * 24 * 60 * 60  # 7 days
+        )
+
+        batch_count = 0
+        start_time = time.time()
+
+        while True:
+            batch_start = time.time()
+            batch_data = []
+            current_time = datetime.now()
+
+            # Generate data for all users in batch
+            for user_id in [f'user-{i:04d}' for i in range(1, 501)]:
+                for metric_type in ['heart_rate', 'steps', 'calories_burned', 'active_minutes']:
+                    batch_data.append({
+                        'user_id': user_id,
+                        'metric_type': metric_type,
+                        'value': _generate_realistic_value(user_id, metric_type),
+                        'timestamp': current_time,
+                        'device_id': f'device-{random.randint(1, 10):03d}',
+                        'session_id': f'session-{batch_count:06d}'
+                    })
+
+            # Batch insert for performance
+            if batch_data:
+                db.real_time_metrics.insert_many(batch_data)
+                batch_count += 1
+
+                elapsed = time.time() - batch_start
+                total_elapsed = time.time() - start_time
+                records_per_second = len(batch_data) / elapsed
+
+                print(f"Batch {batch_count}: Inserted {len(batch_data):,} records "
+                      f"in {elapsed:.2f}s ({records_per_second:,.0f} records/sec) "
+                      f"Total: {batch_count * len(batch_data):,} records")
+
+            # Wait for next second
+            time.sleep(max(0, 1.0 - (time.time() - batch_start)))
+
+    except KeyboardInterrupt:
+        print(f"\n🛑 Stopped after {batch_count} batches")
+        total_records = batch_count * 2000  # 500 users * 4 metrics
+        print(f"📈 Total records generated: {total_records:,}")
+    except Exception as e:
+        print(f"❌ Error: {e}")
+    finally:
+        client.close()
+
+
 if __name__ == "__main__":
+    # Generate sample data
     postgres_data = generate_postgres_data()
     mongo_data = generate_mongo_data()
     save_data(postgres_data, mongo_data)
+
+    print("\n" + "=" * 60)
+    print("🚀 Data Generation Options")
+    print("=" * 60)
+
+    print("1. Start HIGH-PERFORMANCE real-time data generator (recommended)")
+    print("   - Generates data for all 500 users every second")
+    print("   - 2,000 records per second (4 metrics × 500 users)")
+    print("   - Data auto-expires after 7 days")
+    print("2. Exit (data already generated for demo)")
+
+    response = input("\nSelect option : ").strip()
+
+    if response == '1':
+        start_fast_data_generation()
+    else:
+        print("✅ Sample data generation completed!")
+        print("🎯 Run 'streamlit run app.py' to start the dashboard")

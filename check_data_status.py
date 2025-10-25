@@ -41,10 +41,12 @@ def check_all_data():
         metrics_count = db.user_metrics.count_documents({})
         nutrition_count = db.nutrition_logs.count_documents({})
         sleep_count = db.sleep_records.count_documents({})
+        real_time_count = db.real_time_metrics.count_documents({})
 
         print(f"   user_metrics: {metrics_count} documents")
         print(f"   nutrition_logs: {nutrition_count} documents")
         print(f"   sleep_records: {sleep_count} documents")
+        print(f"   real_time_metrics: {real_time_count} documents")
 
         client.close()
 
